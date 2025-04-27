@@ -63,3 +63,9 @@ TC39的解决方案是加了一个妥协章节：***附录B（Appendix B）：�
 alert("Hello, JS!")
 ```
 
+ 各种JS环境将API添加到JS程序的全局范围内，这些API会给一些特定的功能，例如alert啥的。
+
+类似的还有console.log, fetch , fs.write之类
+
+***很多JS不兼容的问题，其实不是JS语言问题，而是各个环境提供的API不一致导致的。***
+

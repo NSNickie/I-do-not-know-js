@@ -108,3 +108,84 @@ alert("Hello, JS!")
 ***虽然JS不是并且不可能是向前兼容的，但认识到JS的向后兼容性是至关重要的，包括它对网络的持久益处以及因此对JS施加的约束和困难。***
 
 *<u>We don't break the web!</u>*
+
+## Jumping the Gaps
+
+由于JS不向前兼容，在老引擎跑新代码可能会导致崩溃。对于新的和不兼容的语法，解决方案是**转译**。***<u>转译是一个人为创造的社区术语，用于描述实用工具将程序的源代码从一种形式转换为另一种形式。</u>***通常与语法相关的向前兼容性问题是通过使用转译器将较新的JS语法版本转换为等效的较旧语法来解决的（最常见的是Babel）。
+
+还以一种情况是**填充**(**polyfill**)。比如说finally是es2019的特性，如果需要填充这个方法，补丁可能类似这样：
+
+```javascript
+if (!Promise.prototype.finally) {
+    Promise.prototype.finally = function f(fn){
+        return this.then(
+            function t(v){
+                return Promise.resolve( fn() )
+                    .then(function t(){
+                        return v;
+                    });
+            },
+            function c(e){
+                return Promise.resolve( fn() )
+                    .then(function t(){
+                        throw e;
+                    });
+            }
+        );
+    };
+}
+```
+
+<u>***转译和填充是解决使用语言中最新稳定特性与网站或应用程序仍需支持的旧环境之间差距的两种非常有效的技术。由于 JS 不会停止改进，这个差距将永远存在。未来，应该将这两种技术作为每个 JS 项目生产链的标准部分。***</u>
+
+## What's in an interpretation?
+
+著名争论：***JS编写的代码是解释型脚本还是编译型程序***？大多数人的观点似乎是JS是一种解释型（脚本）语言，但事实比这更复杂。
+
+*<u>真正重要的是，明确了解JS是被解释还是编译，关系到错误处理的本质</u>*。
+
+JS源代码在执行之前会被解析。规范要求如此，因为它要求“早期错误”——在代码中静态确定的错误，例如重复的参数名称——在代码开始执行之前被报告。这些错误在代码未被解析之前无法被识别。
+
+**所以JS是一种解析语言**。**但它是编译的吗**？
+
+**The anser is closer to yes than no.** **答案更接近于“是”，而不是“不是”。**
+
+解析后的JS被转换为优化的（二进制）形式，然后执行该“代码”；引擎在完成所有繁重的解析工作后通常不会回到逐行执行模式——大多数语言/引擎不会这样做，因为那样会非常低效。
+
+具体来说，这个“编译”产生另一种二进制字节码，然后交给“JS虚拟机”去执行。有些人喜欢说这个虚拟机是在“解释”字节码。但这意味着Java和其他十几种由JVM驱动的语言其实是被解释的，而不是编译的。显然，这与一般对Java等语言的编译语言的常规说法是矛盾的。
+
+另一个复杂之处在于，JS引擎可以对生成的代码（解析后）进行多次JIT（即时）处理/优化，这又可以根据不同的视角合理地成为“编译”或“解释”。实际上，这在JS引擎内部是一个非常复杂的情况。
+
+**考虑一下整个JS源程序的流程：**
+
+1. 程序离开开发者的编辑器之后，他会被Babel转换，然后由Webpack打包（可能还有其他半打构建过程），最后以这种截然不同的形式交付给JS引擎。
+2. JS引擎将代码解析为抽象语法树（AST）。
+3. 然后引擎将该抽象语法树（AST）转换为一种字节码，一种二进制中间表示（IR），接着通过优化的JIT编译器进一步优化/转换。
+4. 最后JS虚拟机执行该程序。
+
+***<u>作者认为，虽然形式上JS不是传统编译型语言，但实质上，它的执行机制已经非常像编译型语言了。</u>***
+
+## Web Assembly (WASM)
+
+**影响JS演变的一个主要Concern是性能，包括JS的解析/编译速度以及编译代码的执行速度**。
+
+WASM与ASM.js相似，其最初目的是为非JS程序（如C等）提供一种转换为可以在JS引擎中运行的形式。与ASM.js不同，WASM选择通过以一种完全不同于JS的形式表示程序，来绕过JS解析/编译中固有的一些延迟，从而使程序能够更快地执行。
+
+有些人提出WASM指向一个未来，那时JS将被从网络中去除或减少。这些人通常对JS抱有不满，希望能用其他语言——任何其他语言！——来取代它。由于WASM允许其他语言在JS引擎中运行，表面上这并不是完全不切实际的幻想故事。
+
+但作者认为：***<u>WASM不会取代JS</u>***。WASM显著增强了Web（包括JS）的能力。这是一件好事，WASM 的强大与否，和人们是否拿它当逃避写 JS 的工具是两码事。
+
+## Strictly Speaking
+
+**综合来看，严格模式在很大程度上实际上是默认的，尽管从技术上讲，它并不是真正的默认设置。**
+
+## Defined
+
+- JS is an implementation of the ECMAScript standard (version ES2019 as of this writing), which is guided by the TC39 committee and hosted by ECMA. It runs in browsers and other JS environments such as Node.js.
+- JS is a multi-paradigm language, meaning the syntax and capabilities allow a developer to mix and match (and bend and reshape!) concepts from various major paradigms, such as procedural, object-oriented (OO/classes), and functional (FP).
+- JS is a compiled language, meaning the tools (including the JS engine) process and verify a program (reporting any errors!) before it executes.
+
+
+
+
+

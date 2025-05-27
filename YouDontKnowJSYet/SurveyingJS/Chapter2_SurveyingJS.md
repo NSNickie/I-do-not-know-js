@@ -96,9 +96,56 @@ console.log(age);
 
 ## Comparisons
 
+在程序中做出决策需要比较值以确定他们的身份和相互关系。JS有几种机制来实现值的比较。
 
+### Equal...ish
 
+出于易用性和历史原因，‘相等’的含义比表面上的精确匹配（exact identity）更复杂。**换句话说，我们必须意识到等式比较和等价比较之间的细微差别。**
 
+“===”符号一定是严格，狭义而精确的吗？作者认为不完全是。当然大多数这样的比较都符合这种情况，比如：
 
+```javascript
+3 === 3.0;              // true
+"yes" === "yes";        // true
+null === null;          // true
+false === false;        // true
 
+42 === "42";            // false
+"hello" === "Hello";    // false
+true === 1;             // false
+0 === null;             // false
+"" === null;            // false
+null === undefined;     // false
+```
+
+### Note
+
+另一种描述“===”的相等比较方法是，“检查值和类型”。然而事情不仅仅如此。JS中的所有值比较都考虑被比较值的类型，而不仅仅是“===”运算符。**具体来说，“===”在比较中不允许任何类型转换（即“强制转换”），而其他JS比较则允许强制转换**。
+
+但是“===”运算符确实有一些细微之处，许多JS开发者对此视而不见，这对他们是有害的。比如NaN和-0。考虑一下：
+
+```javascript
+NaN === NaN;            // false
+0 === -0;               // true
+```
+
+这种现象可能令人困扰，因此最好避免使用“===”。可以使用Number.isNaN()来比较NaN，对于-0可以使用Object.is()，不会出问题。幽默地说，Object.is()x相当于四重等于“====”，真正严格的比较！
+
+**当我们考虑对象值（非原始值）比较时，情况变得更加复杂**。考虑：
+
+```javascript
+[ 1, 2, 3 ] === [ 1, 2, 3 ];    // false
+{ a: 42 } === { a: 42 }         // false
+(x => x * 2) === (x => x * 2)   // false
+```
+
+发生了什么？
+
+（这里的翻译有点烂，贴原文）
+
+It may seem reasonable to assume that an equality check considers the nature or contents of the value; after all,  `42===42` considers the actual 42 value and compares it. But when it comes to objects, a content-aware comparison is generally referred to as "structural equality."
+
+JS并不提供对象值的结构相等比较机制，仅提供引用身份比较。要进行结构相等比较，您需要自己实现检查。
+
+但要小心，这比你想象的要复杂。*<u>例如，你如何判断两个函数是否“结构上等价”？即使将他们的源代码文本转换为字符串进行比较，也无法考虑闭包问题</u>*。**JS不提供结构相等比较，因为处理所有边缘情况几乎是不可行的！**
 

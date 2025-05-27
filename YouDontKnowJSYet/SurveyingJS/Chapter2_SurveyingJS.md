@@ -169,4 +169,22 @@ JS并不提供对象值的结构相等比较机制，仅提供引用身份比较
 
   比如<,>,<=,>=这些运算符也会在类型不同的时候进行强制转换。
 
-  
+## How We Organize in JS
+
+在JS生态系统中，有两种主要的代码（数据和行为）组织模式被广泛使用：**类和模块**。这些模式并不是相互排斥的；许多程序可以并且确实同时使用这两种模式。
+
+### Classes
+
+类的定义：
+A class in a program is a definition of a "type" of custom data structure that includes both data and behaviors that operate on that data. Classes define how such a data structure works, but classes are not themselves concrete values. To get a concrete value that you can use in the program, a class must be instantiated (with the `new` keyword) one or more times.
+
+### Class Inheritance
+
+传统“类导向”设计的另一个固有方面，尽管在JS中使用得较少，是“继承”和“多态”。
+
+### The Rabbit Hole Deepens
+
+
+
+
+

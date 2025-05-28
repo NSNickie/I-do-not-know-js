@@ -117,5 +117,65 @@ GPT总结：**this的五种典型绑定规则**：
 
 具体可看此git项目的KnowAboutThis。
 
+## Prototypes
 
+GPT总结：**JS使用原型链来实现继承和共享行为。每个对象都有个一个隐藏属性[[Prototype]]，它指向另一个对象，这个对象就是它的原型**。
 
+### Object Linkage
+
+对象链接本质上是指：**一个对象通过其内部的[[Prototype]]链接到另一个对象。**
+
+如何建立对象链接？
+
+1. Object.create(...)
+
+   ```javascript
+   const A = { x: 1 };
+   const B = Object.create(A);
+   console.log(B.x); // 1
+   
+   ```
+
+2. 构造函数+prototype
+
+   ```javascript
+   function Foo() {}
+   Foo.prototype.sayHi = function () {
+     console.log('Hi!');
+   };
+   const f = new Foo();
+   f.sayHi(); // Hi!
+   
+   ```
+
+3. class (ES6)
+
+   ```javascript
+   class A {
+     sayHello() {
+       console.log('hello');
+     }
+   }
+   const a = new A();
+   a.sayHello();
+   
+   ```
+
+书上还有一种情况，**属性遮蔽**，考虑：
+
+```javascript
+homework.topic;
+// "JS"
+
+otherHomework.topic;
+// "JS"
+
+otherHomework.topic = "Math";
+otherHomework.topic;
+// "Math"
+
+homework.topic;
+// "JS" -- not "Math"
+```
+
+topic 在 otherHomework 上“遮蔽”了链中homework对象上同名的属性。

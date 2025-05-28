@@ -38,4 +38,65 @@ ES6将基本数据结构/集合类型在JS中定义为可迭代对象，包括�
 
 **在大多数情况下，JS中的所有内置可迭代对象都有三种可用的迭代器形式：仅键（keys()），仅值(values())，条目(entries())。**
 
-除了使用内置可迭代对象外，还可以确保自己跌数据结构遵循迭代协议；这样做意味着你可以使用for...of循环和...
+除了使用内置可迭代对象外，还可以确保自己跌数据结构遵循迭代协议；这样做意味着你可以使用for...of循环和...。
+
+## Closure
+
+*<u>**Closure is when a function remembers and continues to access variables from outside its scope, even when the function is executed in a different scope.**</u>*
+
+*<u>**闭包是指一个函数记住并继续访问起作用域外的变量，即使该函数在不同的作用域中执行。**</u>*
+
+首先，闭包是函数本质的一部分。对象没有闭包，函数有。其次，要观察闭包，必须在与该函数最初定义的作用于不同的作用域中执行该函数。
+
+```javascript
+function greeting(msg) {
+    return function who(name) {
+        console.log(`${ msg }, ${ name }!`);
+    };
+}
+
+var hello = greeting("Hello");
+var howdy = greeting("Howdy");
+
+hello("Kyle");
+// Hello, Kyle!
+
+hello("Sarah");
+// Hello, Sarah!
+
+howdy("Grant");
+// Howdy, Grant!
+```
+
+GPT认为闭包的本质：
+**函数可以访问它定义时所处作用域中的变量，即使这个函数被“带出”那个作用域也一样。**
+
+闭包实现依赖JS的作用域链：
+**当你定义一个函数时，JS引擎会把它的词法作用域上下文绑定到函数内部，并在后续调用中继续沿这条作用域链查找变量。**
+
+GPT总结的闭包常见坑：
+
+1. **闭包中的变量是共享的**
+
+   ***<u>多个闭包访问的是同一份变量，不是复制</u>***：
+
+   ```javascript
+   function createFuncs() {
+     const funcs = [];
+     for (var i = 0; i < 3; i++) {
+       funcs.push(() => console.log(i));
+     }
+     return funcs;
+   }
+   
+   const fs = createFuncs();
+   fs[0](); // 3
+   fs[1](); // 3
+   fs[2](); // 3
+   
+   ```
+
+   可以用let而不是用var，就可以解决这个问题了。
+
+GPT总结：
+**闭包是JS函数的一种能力，能访问其外部函数作用域中的变量，即使外部函数早已返回。它是作用域链的实际应用，常用于封装、持久化变量等场景。**

@@ -63,3 +63,27 @@ scheduleMeeting("17:00",45);    // true
 scheduleMeeting("17:30",30);    // false
 scheduleMeeting("18:00",15);    // false
 ```
+
+## Practicing Closure
+
+`range(..)` 函数的第一个参数是一个数字，表示所需数字范围的第一个数字。第二个参数也是一个数字，表示所需范围的结束（包含）。如果省略第二个参数，则应返回另一个函数，该函数期望该参数。
+
+```javascript
+function range(start,end) {
+    // ..TODO..
+}
+
+range(3,3);    // [3]
+range(3,8);    // [3,4,5,6,7,8]
+range(3,0);    // []
+
+var start3 = range(3);
+var start4 = range(4);
+
+start3(3);     // [3]
+start3(8);     // [3,4,5,6,7,8]
+start3(0);     // []
+
+start4(6);     // [4,5,6]
+```
+

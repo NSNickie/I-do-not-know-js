@@ -87,3 +87,24 @@ greeting = ."Hi";
 
 事实上，JS引擎在执行第一行和第二行之前，唯一知道第三行语法错误的方法是，JS引擎在执行第一行和第二行之前，唯一知道第三行语法错误的方法是，**JS引擎首先解析整个程序，然后再执行其中的任何部分**。
 
+### Early Errors
+
+考虑：
+
+```javascript
+console.log("Howdy");
+
+saySomething("Hello","Hi");
+// Uncaught SyntaxError: Duplicate parameter name not
+// allowed in this context
+
+function saySomething(greeting,greeting) {
+    "use strict";
+    console.log(greeting);
+}
+```
+
+Howdy消息没有被打印，尽管它是一个格式正确的语句。
+
+**<u>*唯一合理的解释是代码必须在任何执行发生之前首先被完全解析。*</u>**
+

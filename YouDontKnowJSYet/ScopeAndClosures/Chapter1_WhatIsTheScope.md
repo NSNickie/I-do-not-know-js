@@ -148,5 +148,7 @@ saySomething();
 
 **在变量声明之前的那段时间里，虽然变量已经被“创建”，但不能访问，否则会抛出 `ReferenceError`，这段时间就叫TDZ。**
 
-
+> [!NOTE]
+>
+> 用let会报这个错，但是用var就不会报错，会是undefined。var会提升（hoist）并初始化。
 

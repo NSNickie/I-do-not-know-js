@@ -168,3 +168,42 @@ JS是不是先将代码转换为AST，然后通过解释AST中表示的操作来
 >
 > ChatGPT：**JS是先编译、后执行的语言，只不过编译过程在运行时自动快速完成。它与传统编译语言的差别只是：编译发生地很快、很隐蔽。**
 
+## Compiler Speak
+
+让我们关注JS引擎在编译程序时如何识别变量并确定作用域。
+
+看：
+
+```javascript
+var students = [
+    { id: 14, name: "Kyle" },
+    { id: 73, name: "Suzy" },
+    { id: 112, name: "Frank" },
+    { id: 6, name: "Sarah" }
+];
+
+function getStudentName(studentID) {
+    for (let student of students) {
+        if (student.id == studentID) {
+            return student.name;
+        }
+    }
+}
+
+var nextStudent = getStudentName(73);
+
+console.log(nextStudent);
+// Suzy
+```
+
+Other than declarations, all occurrences of variables/identifiers in a program serve in **one of two "roles": either they're the target of an assignment or they're source of a value.**
+
+引入变量在使用时的**两个角色：**
+
+- **target：赋值目标（谁被赋值）**
+- **source：取值来源（谁被读取）**
+
+<u>你怎么知道一个变量是否是目标？检查是否有一个值被赋给它；如果有，那他就是一个目标。如果没有，那么这个变量就是一个源。</u>
+
+**为了让JS引擎正确处理程序的变量，它必须首先将每个变量的出现标记为目标或源**。现在我们将深入探讨如何确定每个角色。
+

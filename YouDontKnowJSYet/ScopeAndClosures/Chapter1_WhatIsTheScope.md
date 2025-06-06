@@ -207,3 +207,44 @@ Other than declarations, all occurrences of variables/identifiers in a program s
 
 **为了让JS引擎正确处理程序的变量，它必须首先将每个变量的出现标记为目标或源**。现在我们将深入探讨如何确定每个角色。
 
+### Target
+
+上面的代码有四个赋值操作。
+
+1. **明显的赋值操作**
+
+   ```javascript
+   students = [ /*...*/ ]
+   nextStudent = getStudentName(73)
+   ```
+
+2. **隐式的赋值操作一：for-of中的变量**
+
+   ```javascript
+   for (let student of students) { ... }
+   ```
+
+   - student是目标
+   - students是来源
+
+3. **隐式的赋值操作二：参数传递时的赋值**
+
+   ```javascript
+   getStudentName(73)
+   ```
+
+   studentId被赋值了73
+
+4. **“最容易忽略”的赋值操作：函数声明**
+
+   ```javascript
+   function getStudentName(studentID) { ... }
+   ```
+
+   实际上这也看做是一个“赋值行为”，它在编译阶段就已经将getStudentName和其对应函数对象绑定起来了。
+
+> [!NOTE]
+>
+> - 函数声明会被**提前hoist到作用域顶部**
+> - 而且会在**编译阶段就建立绑定**，不像var那样只hoist声明不hoist值
+

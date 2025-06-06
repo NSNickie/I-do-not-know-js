@@ -259,3 +259,26 @@ Other than declarations, all occurrences of variables/identifiers in a program s
 | `student` in `return student.name`                       | ✅ source | 读取值并返回         |
 | `getStudentName` in `getStudentName(73)`                 | ✅ source | 调用函数，查找绑定值 |
 | `console`, `nextStudent` in `console.log(...)`           | ✅ source | 使用已有值进行输出   |
+
+## Cheating: Runtime Scope Modifications
+
+有两个作弊方法被禁止使用：
+
+- **eval()**
+
+  为什么危险？
+
+  1. JS引擎在函数定义时就会为作用域分配内存结构，eval破坏了这一机制，强迫引擎重新解释当前作用域结构。
+  2. 性能变差，代码变得不可预测，难以调试。
+  3. 容易被滥用注入攻击
+
+- **with()**
+
+  其作用是扩展一个语句的作用域链。
+
+  为什么危险？
+
+  1. 作用域链变得不可预测
+  2. 引擎很难优化这类代码，几乎所有的js引擎对with都优化无能
+  3. 调试困难，代码可读性非常差
+

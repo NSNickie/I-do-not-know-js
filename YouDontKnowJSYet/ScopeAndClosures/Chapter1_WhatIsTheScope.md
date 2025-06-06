@@ -108,3 +108,45 @@ Howdy消息没有被打印，尽管它是一个格式正确的语句。
 
 **<u>*唯一合理的解释是代码必须在任何执行发生之前首先被完全解析。*</u>**
 
+### Hoisting
+
+最后，考虑一下：
+
+```javascript
+function saySomething() {
+    var greeting = "Hello";
+    {
+        greeting = "Howdy";  // error comes from here
+        let greeting = "Hi";
+        console.log(greeting);
+    }
+}
+
+saySomething();
+// ReferenceError: Cannot access 'greeting' before
+// initialization
+```
+
+这里的referenceError是因为greeting=”howdy“过早地访问了greeting变量，这种冲突被称为**时间死区**（TDZ）。
+
+你可能认为，greeting=”Howdy“应该是赋值给var greeting=”Hello“的那个变量。
+
+但实际上，由于后面有一个let greeting=”hi“，这会创建一个块级作用域的新变量greeting，而这行赋值是在它 **初始化之前**使用它，因此触发ReferenceError。
+
+***为什么会这样？***
+
+推理过程：
+
+- 在 `greeting="Howdy"`那一行，`let greeting`还没声明完（没初始化）
+- 但JS引擎已经知道 **这个块里有个叫greeting的let声明**
+- 也就是说，**引擎已经提前建立了作用域结构和变量映射**
+- <u>***这必须是编译阶段完成的事情***</u>
+
+**<u>*所以，JS一定是先解析（parse）+编译（compile），然后才执行*</u>**
+
+### TDZ？
+
+**在变量声明之前的那段时间里，虽然变量已经被“创建”，但不能访问，否则会抛出 `ReferenceError`，这段时间就叫TDZ。**
+
+
+

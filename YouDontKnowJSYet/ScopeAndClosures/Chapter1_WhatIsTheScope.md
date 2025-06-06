@@ -248,3 +248,14 @@ Other than declarations, all occurrences of variables/identifiers in a program s
 > - 函数声明会被**提前hoist到作用域顶部**
 > - 而且会在**编译阶段就建立绑定**，不像var那样只hoist声明不hoist值
 
+### Sources
+
+除了target，其他都是source。
+
+| 变量引用语境                                             | 角色     | 说明                 |
+| -------------------------------------------------------- | -------- | -------------------- |
+| `students` in `for (let student of students)`            | ✅ source | 提供数组元素的来源   |
+| `student`, `studentID` in `if (student.id == studentID)` | ✅ source | 读取值进行比较       |
+| `student` in `return student.name`                       | ✅ source | 读取值并返回         |
+| `getStudentName` in `getStudentName(73)`                 | ✅ source | 调用函数，查找绑定值 |
+| `console`, `nextStudent` in `console.log(...)`           | ✅ source | 使用已有值进行输出   |

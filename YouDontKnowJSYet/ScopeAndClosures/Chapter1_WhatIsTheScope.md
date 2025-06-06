@@ -282,3 +282,17 @@ Other than declarations, all occurrences of variables/identifiers in a program s
   2. 引擎很难优化这类代码，几乎所有的js引擎对with都优化无能
   3. 调试困难，代码可读性非常差
 
+## Lexical Code
+
+**Javascript的作用域是在编译阶段确定的。这种作用域规则就叫做词法作用域。**
+
+**它完全由你写代码的位置决定——比如函数、代码块和变量声明彼此之间的嵌套关系。**
+
+--It is controlled entirely by the placement of functions, blocks, and variable declarations, in relation to one another.
+
+**当你引用一个变量，这个引用必须来自词法上能访问到的作用域。否则这个变量就叫做未声明变量。**
+
+**注意，编译阶段并不会真正为作用域或变量分配内存，因为此时程序还没有开始执行。**
+
+**换句话说，作用域虽然是在编译阶段识别的，但它们真正的创建和使用发生在运行时，每当代码进入一个作用域时，才会实际生成那个作用域。**
+

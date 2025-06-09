@@ -93,3 +93,34 @@ Javascript使用词法作用域机制，作用域可以任意嵌套。**当一�
 - function声明的变量会被初始化为对应函数体；
 - var声明的变量被提升并初始化为undefined
 - let，const生命的变量被提升但不初始化，处于暂时性死区（TDZ）。
+
+## Lookup Failures
+
+当一个变量查找失败（所有词法作用域中都没有找到声明）时，会出现ReferenceError。但是否抛出错误，以及错误的形式，取决于：
+
+**变量用途+严格模式**：
+
+| 模式       | 变量用途 | 结果                         |
+| ---------- | -------- | ---------------------------- |
+| 非严格模式 | `source` | ReferenceError               |
+| 非严格模式 | `target` | 自动创建全局变量（非常危险） |
+| 严格模式   | `source` | ReferenceError               |
+| 严格模式   | `target` | ReferenceError               |
+
+❓**“not defined” ≠ “undefined”**
+
+- not defined：变量未声明（会抛错）
+- undefined：变量已声明，但尚未赋值（合法值）
+
+🧨 **typeof 的“误导”**
+
+- typeof foo无论foo是否声明，都会返回“undefined”，开发者需要特别留意。
+
+### Global...What!?
+
+如果在非严格模式下对一个没有声明的目标变量进行赋值，会导致意外的全局变量被创建！这是非常糟糕而且危险的。这也是开启严格模式的好处之一。
+
+**永远不要依赖意料之外的全局变量创建。总是使用严格模式，并且正式地声明你的变量**。由此如果你错误使用了一个没有声明的变量，你会获得一个很有用的ReferenceError。
+
+### Building On Metaphors
+

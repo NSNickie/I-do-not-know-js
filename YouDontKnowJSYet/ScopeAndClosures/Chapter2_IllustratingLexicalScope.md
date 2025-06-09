@@ -124,3 +124,11 @@ Javascript使用词法作用域机制，作用域可以任意嵌套。**当一�
 
 ### Building On Metaphors
 
+可以看看这张图：
+
+![Scope "Building"](https://github.com/getify/You-Dont-Know-JS/raw/2nd-ed/scope-closures/images/fig3.png)
+
+这栋建筑相当于嵌套作用域集合。一楼代表现在在执行的作用域，顶楼代表全局作用域。
+
+通过首先在当前楼层查找目标或源来解决问题，如果没找到，就坐电梯到下一层（外部作用域）。一旦到达顶层，要么找到，要么没有，但无论如何都必须停止。
+

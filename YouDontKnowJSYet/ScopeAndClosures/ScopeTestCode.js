@@ -15,4 +15,12 @@
 //   console.log(greeting);
 // }
 
-eval("console.log('eval test')");
+// eval("console.log('eval test')");
+
+function illegalShadowing() {
+  let test;
+  let test = 2;
+
+  console.log(test);
+}
+illegalShadowing();

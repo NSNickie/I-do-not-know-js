@@ -70,3 +70,71 @@ JS的变量查找遵循 **词法作用域**规则，即： **从当前作用域�
 - `window.xxx` 是对全局变量的“另一种访问方式”，访问的是同一个值（不是副本）。
 - 可以用来绕过shadowing，访问被遮蔽的全局变量。
 
+### Illegal Shadowing
+
+并不是所有的声明遮蔽组合都是合法的。let可以遮蔽var，但var不能遮蔽let。
+
+```javascript
+function something() {
+    var special = "JavaScript";
+
+    {
+        let special = 42;   // totally fine shadowing
+
+        // ..
+    }
+}
+
+function another() {
+    // ..
+
+    {
+        let special = "JavaScript";
+
+        {
+            var special = "JavaScript";
+            // ^^^ Syntax Error
+
+            // ..
+        }
+    }
+}
+```
+
+注意，这个another的function，内层的var special声明是在试图声明一个函数作用域的special，实际上这个尝试的意图是没有错的，也就是说想达到这样的效果：
+
+```javascript
+function another(){
+  var special="JavaScript"
+  {
+    let special="JavaScript"
+  }
+}
+```
+
+上面这段其实是没问题的，是合法而且允许的。
+
+***但为什么抛出了SyntaxError错误？***
+
+原话：**The real reason it's raised as a `SyntaxError` is because the `var` is basically trying to "cross the boundary" of (or hop over) the `let` declaration of the same name, which is not allowed.**
+
+翻译：<u>var基本上试图 **越过** ***同名的*** let声明，这是不允许的</u>
+
+但这种越界禁止会在函数边界处停止，所以以下情况不会引发异常：
+
+```javascript
+function another() {
+    // ..
+
+    {
+        let special = "JavaScript";
+
+        ajax("https://some.url",function callback(){
+            // totally fine shadowing
+            var special = "JavaScript";
+
+            // ..
+        });
+    }
+}
+```

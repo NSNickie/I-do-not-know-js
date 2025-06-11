@@ -138,3 +138,57 @@ function another() {
     }
 }
 ```
+
+## Function Name Scope 函数名称作用域
+
+1. **函数声明（Function Declaration）**
+
+   ```
+   js
+   
+   
+   复制编辑
+   function askQuestion() { }
+   ```
+
+   - 函数名 `askQuestion` 会被提升（hoist）到**外围作用域**（如全局或函数作用域）。
+   - 这是最传统、最常见的函数定义方式。
+
+2. **匿名函数表达式（Anonymous Function Expression）**
+
+   ```
+   js
+   
+   
+   复制编辑
+   var askQuestion = function() { };
+   ```
+
+   - 函数被赋值给变量 `askQuestion`；
+   - 由于函数本身没有名字，函数作用域中也没有额外创建任何标识符。
+
+3. **命名函数表达式（Named Function Expression, NFE）**
+
+   ```
+   js
+   
+   
+   复制编辑
+   var askQuestion = function ofTheTeacher() {
+       console.log(ofTheTeacher); // ✅ 可用
+   };
+   console.log(ofTheTeacher); // ❌ ReferenceError
+   ```
+
+   - 函数名 `ofTheTeacher` **不会出现在外围作用域中**；
+   - 它只在函数体内部**自身作用域中可用**；
+   - 该名字是一个**只读绑定**，不可被修改。
+
+------
+
+### ⚠️ 注意点（重点）
+
+- **作用域**：NFE 的名字只在函数体内部有效，函数外无法访问；
+- **不可修改性**：在严格模式（`"use strict"`）下，尝试修改 NFE 名字会抛出 `TypeError`，因为该绑定是只读的（类似 `const`）。
+- **提升行为不同**：函数声明会被提升（hoisting），而函数表达式（包括命名和匿名）不会。
+

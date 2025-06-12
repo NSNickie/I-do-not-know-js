@@ -142,3 +142,32 @@ console.log(window.globalLet); // undefined ❌
 ### 🧠 总结一句话
 
 > **避免在全局作用域中使用 `let/const` 定义变量**，因为它们不会成为全局对象属性，容易被误解和遮蔽，埋下潜在 bug。
+
+### DOM Globals
+
+之前说过浏览器托管的JS环境具有最纯粹的全局作用域行为，但并不尽然。
+
+***<u>一个很让人惊讶的行为是：具有id属性的DOM元素会自动创建一个引用它的全局变量。</u>***
+
+例如：
+
+```html
+<ul id="my-todo-list">
+   <li id="first">Write a book</li>
+   ..
+</ul>
+```
+
+该页面的JS可能包括：
+
+```javascript
+first;
+// <li id="first">..</li>
+
+window["my-todo-list"];
+// <ul id="my-todo-list">..</ul>
+```
+
+如果id值是一个有效的词法名称，例如first，则会创建词法变量。如果不是，访问该全局变量的唯一方法是通过全局对象（window[..]）。
+
+这种id相关的DOM元素作为全局变量的自动注册是一个古老的浏览器行为，尽管如此必须保留它，因为许多老旧网站仍然依赖于此。建议永远不要使用全局变量，即使它们会始终被静默创建。

@@ -171,3 +171,19 @@ window["my-todo-list"];
 如果id值是一个有效的词法名称，例如first，则会创建词法变量。如果不是，访问该全局变量的唯一方法是通过全局对象（window[..]）。
 
 这种id相关的DOM元素作为全局变量的自动注册是一个古老的浏览器行为，尽管如此必须保留它，因为许多老旧网站仍然依赖于此。建议永远不要使用全局变量，即使它们会始终被静默创建。
+
+### What's in a (Window) Name?
+
+还有一个，奇特之处。
+
+```javascript
+var name = 42;
+
+console.log(name, typeof name);
+// "42" string
+```
+
+1. **`window.name` 是浏览器预定义的特殊属性**，默认值是字符串，用于跨页面通信等用途。
+2. **用 `var name` 赋值实际上是修改 `window.name` 的值，并会被自动转成字符串。**
+3. **用 `let name` 则会遮蔽（shadow）全局的 `window.name`，行为更合理、更可控。**
+4. 浏览器中的某些全局变量（如 `window.name`、DOM ID 等）会有特殊行为，要格外小心。

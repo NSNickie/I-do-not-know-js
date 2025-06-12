@@ -41,3 +41,41 @@
 #### ❗ 总结观点
 
 > 全局作用域不应被滥用，但它始终是 JS 应用中不可或缺的协作基础，尤其在非模块化或历史遗留代码中更为重要。
+
+## Where Exactly is this Global Scope?
+
+**全局作用域**位于文件的最外层部分，但事情没这么简单。不同的JS环境对作用域，特别是全局作用域的处理方式不同，JS开发者常常在没有意识到的情况下抱有误解。
+
+### Browser “Window”
+
+JS可以运行的最纯净环境是作为一个独立的.js文件，在浏览器的网页环境中加载。
+
+比如：
+
+```javascript
+var studentName = "Kyle";
+
+function hello() {
+    console.log(`Hello, ${ studentName }!`);
+}
+
+hello();
+// Hello, Kyle!
+```
+
+这段代码可以通过在网页环境中使用内联<script>标签，甚至是动态创建的script DOM元素来加载。在这三种情况下，studentName和hello标识符都在全局作用域中声明。
+
+```javascript
+var studentName = "Kyle";
+
+function hello() {
+    console.log(`Hello, ${ window.studentName }!`);
+}
+
+window.hello();
+// Hello, Kyle!
+```
+
+这是JS规范中可预期的默认行为：外部作用域是全局作用域，studentName被合法地创建为全局变量。
+
+这就是所谓***<u>纯粹</u>***。但不幸的是，这并不总是适用于你遇到的所有JS环境。Ï

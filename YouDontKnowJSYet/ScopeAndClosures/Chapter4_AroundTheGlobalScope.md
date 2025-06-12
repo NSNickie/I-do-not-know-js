@@ -217,3 +217,13 @@ self.studentID;
 
 开发者控制台其实考虑地更多的是开发体验，而不是处理完整JS程序所需的正常严格步骤。
 
+### ES Modules（ESM）
+
+1. **ESM 顶层作用域是模块级作用域，不是全局作用域。**
+   - 顶层的 `var`、`let`、`const`、函数等声明**不会成为全局变量**。
+   - 所以 `window.someVar` 或 `globalThis.someVar` 是 `undefined`，即使你写了 `var someVar`。
+2. **ESM 没有一个“模块作用域对象”可以挂载变量。**
+   - 所以无法用 `this.xxx` 或 `module.xxx` 访问顶层变量。
+3. **模块内部可以访问全局变量，但不会自动创建全局变量。**
+   - 例如：你可以访问 `console`, `document`, `window` 等。
+4. **ESM 鼓励通过 `import/export` 显式管理依赖，避免使用全局变量。**

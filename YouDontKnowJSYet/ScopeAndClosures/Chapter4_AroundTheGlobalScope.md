@@ -78,4 +78,67 @@ window.hello();
 
 这是JS规范中可预期的默认行为：外部作用域是全局作用域，studentName被合法地创建为全局变量。
 
-这就是所谓***<u>纯粹</u>***。但不幸的是，这并不总是适用于你遇到的所有JS环境。Ï
+这就是所谓***<u>纯粹</u>***。但不幸的是，这并不总是适用于你遇到的所有JS环境。
+
+### Globals Shadowing Globals
+
+在浏览器中，**全局变量（variable）** 和 **全局对象属性（如 `window.something`）** 虽然看起来一样，但它们**不是同一套机制**。
+
+```
+js
+
+
+复制编辑
+window.something = 42;   // 设置全局对象属性
+let something = "Kyle";  // 声明全局变量（lexical binding）
+
+console.log(something);        // "Kyle" - 来自作用域变量
+console.log(window.something); // 42 - 来自全局对象属性
+```
+
+- `let something` 定义的是作用域中的变量（**不是** `window` 的属性）。
+- 变量 `something` 会**遮蔽（shadow）** 了 `window.something`。
+- 结果：即使两者名字相同，也无法互通。
+
+------
+
+### ❗ 风险与误区
+
+- 在全局作用域中混用 `let/const` 和 `window.xxx` 会制造变量冲突和行为混淆。
+- 容易导致开发者误判变量来源，增加维护成本。
+- 极容易造成 bug，尤其是多人协作或大型项目中。
+
+------
+
+### ✅ 实用建议
+
+> 在全局作用域下，应避免用 `let` / `const` 定义全局变量。
+
+| 情况           | 推荐做法         | 原因                         |
+| -------------- | ---------------- | ---------------------------- |
+| 定义全局变量   | 使用 `var`       | 同时注册为 `window.xxx` 属性 |
+| 局部作用域变量 | 使用 `let/const` | 避免污染全局，作用域清晰     |
+
+
+
+示例：
+
+```
+js
+
+
+复制编辑
+// 正确：注册全局变量并可通过 window 访问
+var globalVar = 123;
+console.log(window.globalVar); // 123 ✅
+
+// 错误：虽然定义了全局变量，但 window 无法访问
+let globalLet = 456;
+console.log(window.globalLet); // undefined ❌
+```
+
+------
+
+### 🧠 总结一句话
+
+> **避免在全局作用域中使用 `let/const` 定义变量**，因为它们不会成为全局对象属性，容易被误解和遮蔽，埋下潜在 bug。

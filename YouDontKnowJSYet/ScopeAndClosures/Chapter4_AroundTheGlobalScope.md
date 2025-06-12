@@ -187,3 +187,29 @@ console.log(name, typeof name);
 2. **用 `var name` 赋值实际上是修改 `window.name` 的值，并会被自动转成字符串。**
 3. **用 `let name` 则会遮蔽（shadow）全局的 `window.name`，行为更合理、更可控。**
 4. 浏览器中的某些全局变量（如 `window.name`、DOM ID 等）会有特殊行为，要格外小心。
+
+### Web Workers
+
+Web Worker是一个在浏览器JS行为之上的网页平台扩展，它允许一个JS文件在一个与运行主JS程序的线程完全分开的线程（操作系统层面）中运行。
+
+- web worker **无法访问DOM，不过某些api可以用，例如navigator。**
+- Web Worker **不会与主JS程序共享全局作用域。由于没有DOM访问，全局作用域window别名不存在**
+- Web Worker **全局对象引用通常使用self进行**
+
+```javascript
+var studentName = "Kyle";
+let studentID = 42;
+
+function hello() {
+    console.log(`Hello, ${ self.studentName }!`);
+}
+
+self.hello();
+// Hello, Kyle!
+
+self.studentID;
+// undefined
+```
+
+在这个全局作用域里行为几乎是运行JS程序中最纯粹的；也许它更纯粹，因为没有DOM来干扰。
+

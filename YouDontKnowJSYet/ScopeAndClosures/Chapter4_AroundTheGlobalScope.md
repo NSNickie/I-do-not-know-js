@@ -280,3 +280,7 @@ const theGlobalScopeObject =
     (typeof self != "undefined") ? self :
     (new Function("return this"))();
 ```
+
+## Global Aware
+
+下一章将再次深入探讨词法作用域的细节，考察变量何时以及如何可以使用。

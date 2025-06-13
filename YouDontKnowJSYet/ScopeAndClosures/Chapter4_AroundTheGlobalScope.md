@@ -250,3 +250,33 @@ module.exports.hello = hello;
 ```
 
 请记住，标识符global并不是由JS定义的，它是由Node专门定义的。
+
+## Global This
+
+在 JavaScript 中，不同运行环境有不同的全局作用域对象名：
+
+- 浏览器：`window` / `self`
+- Node.js：`global`
+
+`var` / `function` 声明的全局变量会挂到全局对象上，`let` / `const` 不会。
+
+传统方式中，`(new Function("return this"))()` 可以在非严格模式下获得全局对象，但不推荐使用。
+
+ES2020 引入 `globalThis`，作为 **统一、跨平台、标准的全局对象引用名**。
+
+推荐始终使用 `globalThis`，避免对环境的依赖。
+
+若需兼容旧环境，可使用如下 polyfill：
+
+```javascript
+js
+
+
+复制编辑
+const theGlobalScopeObject =
+    (typeof globalThis != "undefined") ? globalThis :
+    (typeof global != "undefined") ? global :
+    (typeof window != "undefined") ? window :
+    (typeof self != "undefined") ? self :
+    (new Function("return this"))();
+```

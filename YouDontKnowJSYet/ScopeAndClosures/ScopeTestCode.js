@@ -18,9 +18,6 @@
 // eval("console.log('eval test')");
 
 function illegalShadowing() {
-  let test;
-  let test = 2;
-
-  console.log(test);
+  console.log(global);
 }
 illegalShadowing();

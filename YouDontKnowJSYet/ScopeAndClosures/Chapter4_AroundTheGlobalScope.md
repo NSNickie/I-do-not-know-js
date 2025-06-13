@@ -227,3 +227,26 @@ self.studentID;
 3. **模块内部可以访问全局变量，但不会自动创建全局变量。**
    - 例如：你可以访问 `console`, `document`, `window` 等。
 4. **ESM 鼓励通过 `import/export` 显式管理依赖，避免使用全局变量。**
+
+### Node
+
+**Node会把加载的每一个.js文件，包括启动Node进程所用的主文件，都视为一个模块（ES模块或CommonJS模块）。**实际上Node程序的**顶层从来都不是全局作用域**。
+
+Node如何定义实际的全局变量呢？唯一方法是向Node自动提供的另一个“全局”对象添加属性，它被称为global。有点像在浏览器JS环境中使用window。
+
+比如
+
+```javascript
+global.studentName = "Kyle";
+
+function hello() {
+    console.log(`Hello, ${ studentName }!`);
+}
+
+hello();
+// Hello, Kyle!
+
+module.exports.hello = hello;
+```
+
+请记住，标识符global并不是由JS定义的，它是由Node专门定义的。

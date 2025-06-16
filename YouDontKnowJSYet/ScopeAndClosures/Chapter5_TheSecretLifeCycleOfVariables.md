@@ -102,3 +102,37 @@ var a = function() {};
 | 是否可提前调用 | ✅ 可以               | ❌ 不行              |
 | 初始值         | ✅ 函数本体           | ❌ undefined         |
 | 错误类型       | 无                   | TypeError（非函数） |
+
+## Variable Hoisting
+
+看这段：
+
+```javascript
+greeting = "Hello!";
+console.log(greeting);
+// Hello!
+
+var greeting = "Howdy!";
+```
+
+- 变量被提升
+- 他会自动初始化为作用域顶部的值undefined
+
+> [!NOTE]
+>
+> 但是不是应该避免所有的提升呢？
+
+## Hoisting: Yet Another Metaphor
+
+> **Hoisting 是编译阶段行为，而非运行阶段代码的“重排”。**
+
+- JS 引擎在进入作用域前，会**在编译阶段**预先收集所有的变量声明（`var`）和函数声明（`function`）。
+- 这一步叫作“注册标识符”：创建作用域记录时将它们放入作用域环境中。
+- 执行阶段不会真的“把代码移动到顶部”。
+
+| 声明类型            | 是否 Hoisting | 被赋初始值 | 初始值内容            |
+| ------------------- | ------------- | ---------- | --------------------- |
+| `function foo() {}` | ✅ 是          | ✅ 是       | 整个函数体            |
+| `var foo`           | ✅ 是          | ✅ 是       | `undefined`           |
+| `let` / `const`     | ❌ 否（有TDZ） | ❌ 否       | TDZ（暂时性死区）报错 |
+

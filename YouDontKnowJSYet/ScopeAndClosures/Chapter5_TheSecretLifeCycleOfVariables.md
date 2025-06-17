@@ -136,3 +136,93 @@ var greeting = "Howdy!";
 | `var foo`           | ✅ 是          | ✅ 是       | `undefined`           |
 | `let` / `const`     | ❌ 否（有TDZ） | ❌ 否       | TDZ（暂时性死区）报错 |
 
+## Re-declaration
+
+### 一、`var` 的行为
+
+- `var` 声明会被**提升（hoisting）**到作用域顶部。
+
+- 在同一作用域中多次 `var` 声明是**合法的**，但只有**第一次声明会生效**，后面的都是**无效的重复声明（no-op）**。
+
+- 例：
+
+  ```
+  js
+  
+  
+  复制编辑
+  var name = "Frank";
+  var name;
+  console.log(name); // "Frank"
+  ```
+
+### 二、`var` 声明 ≠ `= undefined`
+
+- `var name;` **只是声明，不是赋值**，不会覆盖已有的值。
+
+- 而 `var name = undefined;` 才是显式赋值，会覆盖原来的值。
+
+- 例：
+
+  ```
+  js
+  
+  
+  复制编辑
+  var name = "Frank";
+  var name;
+  console.log(name); // "Frank"
+  
+  var name = undefined;
+  console.log(name); // undefined
+  ```
+
+### 三、函数声明与 `var` 的冲突
+
+- 函数声明在提升时**优先级更高**，会覆盖 `var` 的 `undefined` 初始化。
+
+- 后续的 `var` 声明不会改变其值，只有显式赋值才会改变。
+
+- 例：
+
+  ```
+  js
+  
+  
+  复制编辑
+  var greet;
+  function greet() { console.log("Hello"); }
+  var greet;
+  console.log(typeof greet); // "function"
+  var greet = "Hi";
+  console.log(typeof greet); // "string"
+  ```
+
+### 四、`let` 和 `const` 的限制
+
+- 在同一作用域中，`let` 和 `const` **不允许重复声明**，会抛出 SyntaxError。
+
+- 与 `var` 冲突时，只要有 `let` 或 `const` 出现，也会报错。
+
+- 例：
+
+  ```
+  js
+  
+  
+  复制编辑
+  let name = "Frank";
+  let name = "Suzy"; // ❌ SyntaxError
+  
+  var name = "Frank";
+  let name = "Suzy"; // ❌ SyntaxError
+  
+  let name = "Frank";
+  var name = "Suzy"; // ❌ SyntaxError
+  ```
+
+### 五、设计初衷与风格倾向
+
+- `var` 允许重复声明，是 JS 早期设计的产物，但容易出错。
+- `let`/`const` 被设计为更**严格和安全**，用于鼓励良好的编程习惯。
+- 这是语言层面的一种“社会工程”，旨在**约束不严谨的代码写法**。

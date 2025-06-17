@@ -146,7 +146,7 @@ var greeting = "Howdy!";
 
 - 例：
 
-  ```
+  ```javascript
   js
   
   
@@ -164,7 +164,7 @@ var greeting = "Howdy!";
 
 - 例：
 
-  ```
+  ```javascript
   js
   
   
@@ -185,7 +185,7 @@ var greeting = "Howdy!";
 
 - 例：
 
-  ```
+  ```javascript
   js
   
   
@@ -206,7 +206,7 @@ var greeting = "Howdy!";
 
 - 例：
 
-  ```
+  ```javascript
   js
   
   
@@ -226,3 +226,32 @@ var greeting = "Howdy!";
 - `var` 允许重复声明，是 JS 早期设计的产物，但容易出错。
 - `let`/`const` 被设计为更**严格和安全**，用于鼓励良好的编程习惯。
 - 这是语言层面的一种“社会工程”，旨在**约束不严谨的代码写法**。
+
+## Constants
+
+### `const`
+
+- 同样 **禁止重复声明**，但理由不同；
+
+- 技术上必须禁止，因为 `const` 要求：
+
+  - **声明时必须初始化**；
+  - **之后不可重新赋值**；
+
+- 所以任何重复声明都等同于“重新赋值”，因此直接报 SyntaxError；
+
+  ```
+  js
+  
+  
+  复制编辑
+  const name = "Frank";
+  const name = "Suzy"; // ❌ SyntaxError
+  ```
+
+------
+
+### 🔎 错误类型小贴士：
+
+- `SyntaxError`：**编译阶段**抛出，代码无法运行；
+- `TypeError`：**运行阶段**抛出，例如对 `const` 变量尝试赋新值时。

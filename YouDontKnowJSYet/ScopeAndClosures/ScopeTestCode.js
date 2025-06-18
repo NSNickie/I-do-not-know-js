@@ -17,7 +17,29 @@
 
 // eval("console.log('eval test')");
 
-function illegalShadowing() {
-  console.log(global);
+// function illegalShadowing() {
+//   console.log(global);
+// }
+// illegalShadowing();
+// askQuestion();
+// // ReferenceError
+
+// let studentName = "Suzy";
+
+// function askQuestion() {
+//   console.log(`${studentName}, do you know?`);
+// }
+
+var studentName = "Kyle";
+
+{
+  console.log(studentName);
+  // ???
+
+  // ..
+
+  let studentName = "Suzy";
+
+  console.log(studentName);
+  // Suzy
 }
-illegalShadowing();

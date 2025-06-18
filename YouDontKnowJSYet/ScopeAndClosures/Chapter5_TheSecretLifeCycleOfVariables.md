@@ -312,3 +312,12 @@ TDZ 是 JavaScript 在引入 `let` 和 `const` 时为了解决 `var` 的“提�
 | 是否自动初始化   | ✅ 是（初始化为 `undefined`） | ❌ 否                  |
 | 是否存在 TDZ     | ❌ 无（TDZ长度为 0）          | ✅ 有                  |
 | TDZ 中访问会怎样 | 返回 `undefined`             | 抛出 `ReferenceError` |
+
+## Finally Initialized
+
+**理解 JS 变量作用域要从编译时思维入手**，不要停留在运行时。
+
+**hoisting 和 TDZ 都是编译阶段决定的现象**，掌握它们能帮你写出更安全、清晰的代码。
+
+**心智模型的建立很重要**，不要死记规则，而是要建立结构化的理解方式。
+
